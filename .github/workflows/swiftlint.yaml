@@ -7,6 +7,7 @@ on:
       - '.swiftlint.yml'
       - '**/*.swift'
       - '**/*.playground'
+      - '*.playground'
 
 jobs:
   SwiftLint:
