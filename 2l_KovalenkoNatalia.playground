@@ -1,0 +1,47 @@
+//  1. Написать функцию, которая определяет, четное число или нет.
+
+func determineNumber(number: Int) -> Bool {
+    return number % 2 == 0 
+}
+print(determineNumber(number: 10))
+
+
+//  2. Написать функцию, которая определяет, делится ли число без остатка на 3.
+
+func divisibility(number: Int) -> Bool {
+    return number % 3 == 0 
+}
+print(divisibility(number: 10))
+
+
+//  3. Создать возрастающий массив из 100 чисел.
+
+
+var arr = [Int](1...100)
+print(arr)
+
+
+
+//  4. Удалить из этого массива все четные числа и все числа, которые не делятся на 3.
+
+arr.removeAll(where: {determineNumber(number:$0) || !divisibility(number: $0)})
+print (arr)
+
+
+
+//  5. * Написать функцию, которая добавляет в массив новое число Фибоначчи, и добавить при помощи нее 50 элементов. 
+// Числа Фибоначчи определяются соотношениями Fn=Fn-1 + Fn-2.
+
+
+func addFibNumber(arr: [Int]) -> [Int] {
+    var c = arr[arr.count - 1] + arr[arr.count - 2]
+    return arr + [c]
+}
+print(addFibNumber(arr: arr))
+
+var i = 1
+while i <= 50 {
+    arr = addFibNumber(arr: arr)
+    i += 1
+}
+print(arr)
