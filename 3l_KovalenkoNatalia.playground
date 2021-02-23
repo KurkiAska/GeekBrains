@@ -1,0 +1,91 @@
+//  1. Описать несколько структур – любой легковой автомобиль SportCar и любой грузовик TrunkCar.
+//  2. Структуры должны содержать марку авто, год выпуска, объем багажника/кузова, запущен ли двигатель, открыты ли окна, заполненный объем багажника.
+//  3. Описать перечисление с возможными действиями с автомобилем: запустить/заглушить двигатель, открыть/закрыть окна, погрузить/выгрузить из кузова/багажника груз определенного объема.
+//  4. Добавить в структуры метод с одним аргументом типа перечисления, который будет менять свойства структуры в зависимости от действия.
+//  5. Инициализировать несколько экземпляров структур. Применить к ним различные действия.
+//  6. Вывести значения свойств экземпляров в консоль.
+
+
+import Foundation
+
+struct Car {
+    var brand: String
+    var type: CarType
+    var yearOfIssue: String
+    var trunkVolume: Double = 0.0
+    var engineCondition: EngineCondition = .off
+    var windowsCondition: WindowsCondition = .closed
+    
+    enum CarType {
+        case sportCar
+        case trunkCar
+    }
+    enum EngineCondition {
+        case off
+        case on
+    }
+    
+    enum WindowsCondition {
+        case open 
+        case closed
+    }
+    
+    init(brand: String, type: CarType, yearOfIssue: String) {
+        self.brand = brand
+        self.type = type
+        self.yearOfIssue = yearOfIssue
+    }
+    
+    mutating func execute(action: Actions) {
+        switch action {
+        case .StartEngine: 
+            self.engineCondition = .on
+        case .TurnOffEngine:
+            self.engineCondition = .off
+        case .OpenWindows:
+            self.windowsCondition = .open
+        case .CloseWindows:
+            self.windowsCondition = .closed 
+        case .PutInTrunk(let volume):
+            self.trunkVolume += volume 
+        case .PickUpFromTrunk(let volume):
+            self.trunkVolume -= volume
+            if trunkVolume < 0 {
+                trunkVolume == 0
+            }
+        }
+    }
+    
+    enum Actions {
+        case StartEngine
+        case TurnOffEngine
+        case OpenWindows
+        case CloseWindows
+        case PutInTrunk(volume: Double)
+        case PickUpFromTrunk(volume: Double)
+    }
+}
+
+var toyota = Car(brand: "toyota", type: .sportCar, yearOfIssue: "01.01.1988")
+toyota.execute(action: .OpenWindows)
+print(toyota)
+toyota.execute(action: .CloseWindows)
+print(toyota)
+toyota.execute(action: .PutInTrunk(volume: 35.00))
+print(toyota)
+toyota.execute(action: .PickUpFromTrunk(volume: 15.00))
+print(toyota)
+
+var scania = Car(brand: "scania", type: .trunkCar, yearOfIssue: "01.01.2015")
+scania.execute(action: .OpenWindows)
+print(scania)
+scania.execute(action: .CloseWindows)
+print(scania)
+scania.execute(action: .PutInTrunk(volume: 300.00))
+print(scania)
+scania.execute(action: .PickUpFromTrunk(volume: 100.00))
+print(scania)
+scania.execute(action: .StartEngine)
+print(scania)
+scania.execute(action: .TurnOffEngine)
+print(scania)
