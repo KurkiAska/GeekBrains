@@ -1,0 +1,143 @@
+import Foundation
+
+class Car { 
+    var brand: String
+    var type: CarType
+    var yearOfIssue: String
+    var engineCondition: EngineCondition = .off
+    var windowsCondition: WindowsCondition = .closed
+    var nitro: NitrousOxideSystem = .off
+    
+    enum CarType {
+            case sportCar
+            case trunkCar
+    }
+    enum EngineCondition {
+        case off
+        case on
+    }
+    enum WindowsCondition {
+        case open 
+        case closed
+    }
+    enum NitrousOxideSystem {
+        case on
+        case off
+    }
+    
+    init(brand: String, type: CarType, yearOfIssue: String) {
+        self.brand = brand
+        self.type = type
+        self.yearOfIssue = yearOfIssue
+    }
+    
+    func execute(action: Actions) {}
+    
+    enum Actions {
+        case StartEngine
+        case TurnOffEngine
+        case OpenWindows
+        case CloseWindows
+        case PutInTrunk(volume: Double)
+        case PickUpFromTrunk(volume: Double)
+        case SwitchOnNitrousOxideSystem
+        case SwitchOffNitrousOxideSystem
+    }
+    
+    func getDesciption () -> String {
+        return "\(brand)\nТип авто: \(type)\nГод выпуска:\(yearOfIssue)\nДвигатель:\(engineCondition)\nОкна:\(windowsCondition)\nНитро:\(nitro)\n"
+    }
+}
+
+class TrunkCar: Car {
+    var trunkVolume: Double = 0.0
+    
+    init(brand: String, type: CarType, yearOfIssue: String, trunkVolume: Double) {
+        self.trunkVolume = trunkVolume
+        super.init(brand: brand, type: type, yearOfIssue: yearOfIssue)
+    }
+        
+    override func execute(action: Actions) {
+        switch action {
+        case .StartEngine:
+            self.engineCondition = .on
+        case .TurnOffEngine:
+            self.engineCondition = .off
+        case .OpenWindows:
+            self.windowsCondition = .open
+        case .CloseWindows:
+            self.windowsCondition = .closed 
+        case .PutInTrunk(let volume):
+            self.trunkVolume += volume 
+        case .PickUpFromTrunk(let volume):
+            self.trunkVolume -= volume
+            if trunkVolume < 0 {
+                trunkVolume == 0
+            }
+        default: 
+            break 
+        }
+    }
+    override func getDesciption () -> String {
+        return super.getDesciption() + "Вместимость кузова: \(trunkVolume)\n"
+    }
+}
+
+var scania = TrunkCar(
+    brand: "scania", 
+    type: .trunkCar, 
+    yearOfIssue: "01.01.2009", 
+    trunkVolume: 0.0
+)
+scania.execute(action: .CloseWindows)
+scania.execute(action: .PutInTrunk(volume: 300.00))
+scania.execute(action: .PickUpFromTrunk(volume: 100.00))
+scania.execute(action: .StartEngine)
+scania.execute(action: .TurnOffEngine)
+print(scania.getDesciption())
+
+
+
+class SportCar: Car {
+    var maxSpeed: Int = 350
+    
+    init(brand: String, type: Car.CarType, yearOfIssue: String, maxSpeed: Int) {
+        self.maxSpeed = maxSpeed
+        super.init(brand: brand, type: type, yearOfIssue: yearOfIssue)
+    }
+    
+    override func execute(action: Actions) {
+        switch action {
+        case .StartEngine:
+            self.engineCondition =
+                .on
+        case .TurnOffEngine:
+            self.engineCondition = .off
+        case .OpenWindows:
+            self.windowsCondition = .open
+        case .CloseWindows:
+            self.windowsCondition = .closed 
+        case .SwitchOnNitrousOxideSystem:
+            self.nitro = .on 
+        case .SwitchOffNitrousOxideSystem:
+            self.nitro = .off
+        default: 
+            break 
+        }
+    }
+    override func getDesciption () -> String {
+        return super.getDesciption() + "Максимальная скорость: \(maxSpeed)\n"
+    }
+}
+
+var ferrari = SportCar(
+    brand: "ferrari", 
+    type: .sportCar, 
+    yearOfIssue: "01.01.2018", 
+    maxSpeed: 350
+)
+ferrari.execute(action: .CloseWindows)
+ferrari.execute(action: .StartEngine)
+ferrari.execute(action: .TurnOffEngine)
+ferrari.execute(action: .SwitchOnNitrousOxideSystem)
+print(ferrari.getDesciption())
